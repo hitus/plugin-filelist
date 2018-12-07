@@ -533,8 +533,13 @@ class syntax_plugin_filelist extends DokuWiki_Syntax_Plugin {
 
         if ($level < 7) {
             foreach ($trees as $tree) {
-                $renderer->header($tree['name'], $level, 0);
+                $renderer->header(strtok($tree['name'], "\n"), $level, 0);
                 $renderer->section_open($level);
+                $intro = strtok("\0");
+                if ($intro !== false) {
+                    $renderer->cdata($intro);
+                    $renderer->p_open();
+                }
                 $this->_render_page_section($tree['children'], $basedir, $webdir, $params, $renderer, $level + 1);
                 $renderer->section_close();
             }
